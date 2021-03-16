@@ -1,0 +1,18 @@
+//- main.pug
+main
+  h1 Lookup Wishlist Info
+  input#steamid.steamid(type="text" placeholder="User's Steam Id")
+  input.submit(type="button" value="Get Full Wishlist" onclick="return getFullListClick()")
+  #notice The Steam profile MUST be set to public to allow acces to the wishlist information!
+
+script.
+  const inputField = document.querySelector("#steamid");
+  if (inputField) {
+    inputField.addEventListener("keydown", function(e) {
+      if (inputField.value && inputField.value.length > 0) {
+        if (e.keyCode === 13) {
+          return getFullListClick();
+        }
+      }
+    });
+  }

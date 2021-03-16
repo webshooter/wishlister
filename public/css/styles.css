@@ -1,0 +1,284 @@
+@import url("https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap");
+
+body {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: auto auto auto;
+}
+
+header,
+footer {
+  grid-column: 1 / span 5;
+}
+
+main {
+  grid-column: 1 / span 5;
+}
+
+/*
+@media (max-width: 700px) {
+  
+  main {
+    grid-column: 1 / span 5;
+  }
+  
+}
+*/
+
+/* Demo Specific Styles */
+body {
+  margin: 0 auto;
+  padding: 0;
+  font-family: "Cairo", sans-serif;
+}
+
+div.heading {
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 36px;
+}
+
+header,
+main,
+footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+header {
+  background: #ffaa00;
+  padding: 16px 18px;
+  align-items: start;
+  justify-content: left;
+}
+
+header .title {
+  font-size: 34px;
+  font-weight: 700;
+  color: #efefef;
+  text-decoration: none;
+}
+
+main {
+  background: #ffffff;
+  padding: 48px 0;
+  flex-direction: column;
+}
+
+main h1 {
+  font-size: 36px;
+  font-weight: 700;
+  line-height: 24px;
+}
+
+main input.steamid {
+  width: 20%;
+  font-family: "Cairo", sans-serif;
+  font-size: 24px;
+  color: #8a8a8a;
+  border-width: 1px;
+  border-radius: 4px;
+  text-align: center;
+  outline: transparent;
+}
+
+main input.submit {
+  width: 20%;
+  font-family: "Cairo", sans-serif;
+  font-weight: 600;
+  font-size: 18px;
+  color: #efefef;
+  background: #4a4a4a;
+  border: 1px solid #4a4a4a;
+  border-radius: 4px;
+  margin-top: 36px; 
+}
+
+footer {
+  padding: 8px;
+  color: #ffeabf;
+  font-size: 12px;
+  border-top: 1px solid #ffeabf;
+}
+
+div#error {
+  margin: 36px 0;
+  width: 60%;
+  border: 1px solid darkred;
+  background-color: lightcoral;
+  padding: 16px 32px;
+  color: #ffffff;
+  text-align: center;
+  font-weight: 600;
+}
+
+div#notice {
+  margin: 48px auto 24px auto;
+  color: #6a6a6a;
+  font-weight: 600;
+}
+
+div.table {
+  display: flex;
+  flex-direction: column;
+  margin-top: 24px;
+}
+
+div.table-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: start;
+  margin-bottom: 6px;
+}
+
+div.table-row img,
+div.table-row div.appid,
+div.table-row div.name,
+div.table-row div.added {
+  padding: 0 16px;
+  font-weight: 400;
+}
+
+div.table-row div.header.icon,
+div.table-row img {
+  width: 100px;
+}
+
+div.table-row div.header.appid,
+div.table-row div.appid {
+  width: 60px;
+}
+
+div.table-row div.header.added,
+div.table-row div.added {
+  width: 150px;
+}
+
+div.table-row div.header.name,
+div.table-row div.name {
+  width: 690px;
+  font-weight: 700;
+}
+
+div.table-row div.name a {
+  color: #4a4a4a;
+  text-decoration: none;
+}
+
+div.table-row div.name a:hover {
+  color: #ffaa00;
+  text-decoration: underline;
+}
+
+table {
+  background-color: #aaa;
+  width: 1000px;
+}
+tbody {
+  background-color: #ddd;
+  height: 100px;
+  overflow: auto;
+}
+td {
+  padding: 3px 10px;
+  display: inline-block;
+  width: 49%;
+  box-sizing: border-box;
+}
+
+td.image {
+  width: 100px;
+}
+td.appid {
+  width: 100px;
+}
+td.name {
+  width: auto;
+}
+td.added {
+  width: 150px;
+}
+
+tr, tbody{
+  display:block;
+}
+
+
+/* loading animation */
+
+.lds-ellipsis {
+  display: inline-block;
+  position: relative;
+  width: 80px;
+  height: 80px;
+}
+.lds-ellipsis div {
+  position: absolute;
+  top: 33px;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: #cdcdcd;
+  animation-timing-function: cubic-bezier(0, 1, 1, 0);
+}
+.lds-ellipsis div:nth-child(1) {
+  left: 8px;
+  animation: lds-ellipsis1 0.6s infinite;
+}
+.lds-ellipsis div:nth-child(2) {
+  left: 8px;
+  animation: lds-ellipsis2 0.6s infinite;
+}
+.lds-ellipsis div:nth-child(3) {
+  left: 32px;
+  animation: lds-ellipsis2 0.6s infinite;
+}
+.lds-ellipsis div:nth-child(4) {
+  left: 56px;
+  animation: lds-ellipsis3 0.6s infinite;
+}
+@keyframes lds-ellipsis1 {
+  0% {
+    transform: scale(0);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+@keyframes lds-ellipsis3 {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(0);
+  }
+}
+@keyframes lds-ellipsis2 {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(24px, 0);
+  }
+}
+
+
+/* mobile styles */
+
+@media screen and (max-width: 700px) {
+  
+  main input.steamid,
+  main input.submit {
+    width: 80%;
+  }
+  
+}
+
+
+/* misc styles */
+
+.hide {
+  display: none;
+}

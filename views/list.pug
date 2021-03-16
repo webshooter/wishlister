@@ -1,0 +1,24 @@
+//- list.pug
+extends layout.pug
+
+block content
+  main
+    #count.heading Looking up wishlist for
+    #steamid.heading Steam Id: #{steamid}
+    include full-list.pug
+  
+  script.
+    (async function() {
+      const steamid = getQsParam("steamid");
+      const { wishlist, error } = await getWishlist(steamid);
+
+      hideLoader();
+      if (error) {
+        showError(error);
+      } else {
+        const { count, apps } = wishlist;
+        buildTable(apps);
+        updateTotalCount(count);
+      }
+    })();
+    
