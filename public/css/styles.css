@@ -158,7 +158,7 @@ div.table-row div.added {
 
 div.table-row div.header.name,
 div.table-row div.name {
-  width: 690px;
+  width: 600px;
   font-weight: 700;
 }
 
@@ -170,39 +170,6 @@ div.table-row div.name a {
 div.table-row div.name a:hover {
   color: #ffaa00;
   text-decoration: underline;
-}
-
-table {
-  background-color: #aaa;
-  width: 1000px;
-}
-tbody {
-  background-color: #ddd;
-  height: 100px;
-  overflow: auto;
-}
-td {
-  padding: 3px 10px;
-  display: inline-block;
-  width: 49%;
-  box-sizing: border-box;
-}
-
-td.image {
-  width: 100px;
-}
-td.appid {
-  width: 100px;
-}
-td.name {
-  width: auto;
-}
-td.added {
-  width: 150px;
-}
-
-tr, tbody{
-  display:block;
 }
 
 
@@ -267,11 +234,16 @@ tr, tbody{
 
 /* mobile styles */
 
-@media screen and (max-width: 700px) {
+@media only screen and (max-width: 760px) {
   
   main input.steamid,
   main input.submit {
     width: 80%;
+  }
+
+  div.table-row div.header.name,
+  div.table-row div.name {
+    width: 100%;
   }
   
 }

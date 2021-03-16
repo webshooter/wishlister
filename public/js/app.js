@@ -45,6 +45,12 @@ function formatDateAdded(date) {
   return `${year}/${month}/${day}`;
 }
 
+function isMobile() {
+  return window
+    .matchMedia("only screen and (max-width: 760px)")
+    .matches;
+}
+
 // eslint-disable-next-line no-unused-vars
 function getQsParam(param, url = window.location.href) {
   const paramName = param.replace(/[\[\]]/g, "\\$&");
@@ -95,8 +101,54 @@ function updateTotalCount(count) {
   }
 }
 
+function tableHeaderRow() {
+  /*
+  .table-row
+      .header.icon(style="font-weight: 700; padding-left: 18px;") Icon
+      .header.appid(style="font-weight: 700; padding-left: 32px;") App Id
+      .header.name(style="font-weight: 700; padding-left: 16px;") App Name
+      .header.added(style="font-weight: 700; padding-left: 16px;") Date Added
+  */
+
+  const row = document.createElement("div");
+  row.classList.add("table-row");
+
+  const iconHeader = document.createElement("div");
+  iconHeader.classList.add("header");
+  iconHeader.classList.add("icon");
+  iconHeader.style.fontWeight = "700";
+  iconHeader.style.paddingLeft = "16px";
+
+  const appidHeader = document.createElement("div");
+  appidHeader.classList.add("header");
+  appidHeader.classList.add("appid");
+  appidHeader.style.fontWeight = "700";
+  appidHeader.style.paddingLeft = "32px";
+
+  const nameHeader = document.createElement("div");
+  nameHeader.classList.add("header");
+  nameHeader.classList.add("name");
+  nameHeader.style.fontWeight = "700";
+  nameHeader.style.paddingLeft = "16px";
+
+  const addedHeader = document.createElement("div");
+  addedHeader.classList.add("header");
+  addedHeader.classList.add("added");
+  addedHeader.style.fontWeight = "700";
+  addedHeader.style.paddingLeft = "16px";
+
+  row.appendChild(iconHeader);
+  row.appendChild(appidHeader);
+  row.appendChild(nameHeader);
+  row.appendChild(addedHeader);
+
+  return row;
+}
+
 // eslint-disable-next-line no-unused-vars
 function buildTable(apps) {
+  console.log("isMobile", isMobile());
+
   if (apps.length < 1) {
     showError("This wishlist appears to be empty.");
     return;
@@ -108,16 +160,13 @@ function buildTable(apps) {
     return;
   }
 
+  if (!isMobile()) {
+    list.appendChild(tableHeaderRow());
+  }
+
   const rows = apps.map((app) => {
     const row = document.createElement("div");
     row.classList.add("table-row");
-
-    const img = document.createElement("img");
-    img.src = app.image;
-
-    const appid = document.createElement("div");
-    appid.classList.add("appid");
-    appid.appendChild(document.createTextNode(app.appid));
 
     const link = document.createElement("a");
     link.href = `https://store.steampowered.com/app/${app.appid}/`;
@@ -126,15 +175,26 @@ function buildTable(apps) {
     name.classList.add("name");
     name.appendChild(link);
 
-    const added = document.createElement("div");
-    added.classList.add("added");
-    const date = app.added ? new Date(app.added * 1000) : null;
-    added.appendChild(document.createTextNode(formatDateAdded(date)));
+    if (!isMobile()) {
+      const img = document.createElement("img");
+      img.src = app.image;
 
-    row.appendChild(img);
-    row.appendChild(appid);
-    row.appendChild(name);
-    row.appendChild(added);
+      const appid = document.createElement("div");
+      appid.classList.add("appid");
+      appid.appendChild(document.createTextNode(app.appid));
+
+      const added = document.createElement("div");
+      added.classList.add("added");
+      const date = app.added ? new Date(app.added * 1000) : null;
+      added.appendChild(document.createTextNode(formatDateAdded(date)));
+
+      row.appendChild(img);
+      row.appendChild(appid);
+      row.appendChild(name);
+      row.appendChild(added);
+    } else {
+      row.appendChild(name);
+    }
 
     return row;
   });
