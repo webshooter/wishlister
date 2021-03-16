@@ -3,7 +3,7 @@ const bodyParser = require("body-parser");
 const { getWishlist } = require("./steam");
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 // eslint-disable-next-line no-console
 const log = (message) => console.log(message);
