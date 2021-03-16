@@ -119,6 +119,10 @@ div#notice {
   font-weight: 600;
 }
 
+div#steaminfo {
+  text-align: center;
+}
+
 div.table {
   display: flex;
   flex-direction: column;
