@@ -21,21 +21,28 @@ const getWishlist = async (steamid) => {
   let wishlist = {};
   let pageNum = 0;
 
-  let response = await axios.get(buildUrl(baseUrl, steamid, pageNum));
-  if (!responseIsOk(response)) {
-    errors.push(`Steam returned status code [${response.status}]`);
-  }
-
-  while (responseIsOk(response) && responseContainsGames(response)) {
-    const games = getGamesFromList(response);
-    wishlist = Object.assign(wishlist, { ...games });
-    pageNum += 1;
-
-    // eslint-disable-next-line no-await-in-loop
-    response = await axios.get(buildUrl(baseUrl, steamid, pageNum));
+  try {
+    let response = await axios.get(buildUrl(baseUrl, steamid, pageNum));
     if (!responseIsOk(response)) {
       errors.push(`Steam returned status code [${response.status}]`);
     }
+
+    while (responseIsOk(response) && responseContainsGames(response)) {
+      const games = getGamesFromList(response);
+      wishlist = Object.assign(wishlist, { ...games });
+      pageNum += 1;
+
+      // eslint-disable-next-line no-await-in-loop
+      response = await axios.get(buildUrl(baseUrl, steamid, pageNum));
+      if (!responseIsOk(response)) {
+        errors.push(`Steam returned status code [${response.status}]`);
+      }
+    }
+
+    return { wishlist, errors };
+  } catch (err) {
+    console.error(err);
+    errors.push(`Steam returned an error [${err.message}]`);
   }
 
   return { wishlist, errors };

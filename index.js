@@ -37,7 +37,7 @@ app.get("/api/getlist", async (req, res) => {
     log(`[${steamid}] Error response(s) from steam: ${errors}`);
     return res.json({
       success: false,
-      message: "Make sure the Steam Id is correct and the wishlist is public and retry!",
+      message: "<b>Steam returned an error!</b><br />Make sure the Steam Id is correct and the wishlist is public and <a href='/'>retry</a>!",
     });
   }
 
