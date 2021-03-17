@@ -113,14 +113,15 @@ div#error {
   font-weight: 600;
 }
 
-div#notice {
-  margin: 48px auto 24px auto;
+div#notice, div#steaminfo {
+  margin: 48px 12px 24px 12px;
   color: #6a6a6a;
   font-weight: 600;
+  text-align: center;
 }
 
 div#steaminfo {
-  text-align: center;
+  margin-top: 0;
 }
 
 div.table {
