@@ -147,8 +147,6 @@ function tableHeaderRow() {
 
 // eslint-disable-next-line no-unused-vars
 function buildTable(apps) {
-  console.log("isMobile", isMobile());
-
   if (apps.length < 1) {
     showError("This wishlist appears to be empty.");
     return;
