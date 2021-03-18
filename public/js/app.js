@@ -1,10 +1,19 @@
 // eslint-disable-next-line no-unused-vars
-function getFullListClick() {
+function getWishlistClick() {
   const steamid = document.querySelector("#steamid").value;
   if (!steamid || steamid === "") {
     return;
   }
-  document.location.href = `/list?steamid=${steamid}`;
+  document.location.href = `/wishlist?steamid=${steamid}`;
+}
+
+// eslint-disable-next-line no-unused-vars
+function getGamesListClick() {
+  const steamid = document.querySelector("#steamid").value;
+  if (!steamid || steamid === "") {
+    return;
+  }
+  document.location.href = `/gameslist?steamid=${steamid}`;
 }
 
 function hideElement(selector, hide = true) {
@@ -24,13 +33,12 @@ function hideLoader() {
 }
 
 function showError(message) {
-  console.log(message);
   const error = document.querySelector("#error");
   error.innerHTML = message;
   hideElement("#error", false);
 }
 
-function showTable() {
+function showListElement() {
   hideElement("#list", false);
 }
 
@@ -53,7 +61,7 @@ function isMobile() {
 
 // eslint-disable-next-line no-unused-vars
 function getQsParam(param, url = window.location.href) {
-  const paramName = param.replace(/[\[\]]/g, "\\$&");
+  const paramName = param.replace(/[[\]]/g, "\\$&");
   const re = new RegExp(`[?&]${paramName}(=([^&#]*)|&|#|$)`);
   const results = re.exec(url);
 
@@ -79,10 +87,41 @@ async function getWishlist(steamid) {
     .then((response) => response.json());
 
   if (success) {
+    // eslint-disable-next-line no-console
     console.log(`Found ${wishlist.apps.length} apps on wishlist for steamid ${steamid}`);
     return {
       steamid: id,
       wishlist,
+    };
+  }
+
+  // eslint-disable-next-line no-console
+  console.error("error", message);
+  return {
+    error: message,
+  };
+}
+
+// eslint-disable-next-line no-unused-vars
+async function getGamesList(steamid) {
+  const {
+    message,
+    success,
+    games,
+    nickname,
+    steamid: id,
+  } = await fetch(`/api/getgames?steamid=${steamid}`)
+    .then((response) => response.json());
+
+  if (success) {
+    // eslint-disable-next-line no-console
+    console.log(`Found ${games.length} apps in games list for steamid ${steamid}`);
+    return {
+      gameslist: {
+        steamid: id,
+        nickname,
+        games,
+      },
     };
   }
 
@@ -102,14 +141,6 @@ function updateTotalCount(count) {
 }
 
 function tableHeaderRow() {
-  /*
-  .table-row
-      .header.icon(style="font-weight: 700; padding-left: 18px;") Icon
-      .header.appid(style="font-weight: 700; padding-left: 32px;") App Id
-      .header.name(style="font-weight: 700; padding-left: 16px;") App Name
-      .header.added(style="font-weight: 700; padding-left: 16px;") Date Added
-  */
-
   const row = document.createElement("div");
   row.classList.add("table-row");
 
@@ -202,5 +233,82 @@ function buildTable(apps) {
   });
 
   hideLoader();
-  showTable();
+  showListElement();
+}
+
+// eslint-disable-next-line no-unused-vars
+function buildGamesListTable({
+  steamid,
+  nickname,
+  games,
+}) {
+  if (!steamid) {
+    showError("There was a problem getting the list.");
+    return;
+  }
+
+  if (!games || games.length < 1) {
+    showError("There were no games returned for this Steam Id.");
+    return;
+  }
+
+  const labelSteamId = document.querySelector("#steamid");
+  const labelCount = document.querySelector("#count");
+  const labelNickname = document.querySelector("#nickname");
+  const gamesList = document.querySelector("#list");
+
+  const count = games.length || 0;
+
+  labelCount.innerHTML = `Found ${count} games`;
+  labelSteamId.innerHTML = ` for Steam Id ${steamid}`;
+  labelNickname.innerHTML = `Steam user nickname ${nickname}`;
+
+  const rows = games.map((game) => {
+    const {
+      appname,
+      appicon,
+      allhours,
+      appid: id,
+      link: applink,
+    } = game;
+
+    const row = document.createElement("div");
+    row.classList.add("table-row");
+
+    const link = document.createElement("a");
+    link.href = applink;
+    link.appendChild(document.createTextNode(appname));
+    const name = document.createElement("div");
+    name.classList.add("name");
+    name.appendChild(link);
+
+    if (!isMobile()) {
+      const img = document.createElement("img");
+      img.src = appicon;
+
+      const appid = document.createElement("div");
+      appid.classList.add("appid");
+      appid.appendChild(document.createTextNode(id));
+
+      const hoursPlayed = document.createElement("div");
+      hoursPlayed.classList.add("hours-played");
+      hoursPlayed.appendChild(document.createTextNode(`${allhours} hrs`));
+
+      row.appendChild(img);
+      row.appendChild(appid);
+      row.appendChild(name);
+      row.appendChild(hoursPlayed);
+    } else {
+      row.appendChild(name);
+    }
+
+    return row;
+  });
+
+  rows.forEach((row) => {
+    gamesList.appendChild(row);
+  });
+
+  hideLoader();
+  showListElement();
 }

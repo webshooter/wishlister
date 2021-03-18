@@ -1,6 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const { getWishlist } = require("./steam");
+const { steam } = require("./steam");
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -16,9 +16,14 @@ app.get("/", (req, res) => {
   res.render("index", {});
 });
 
-app.get("/list", (req, res) => {
+app.get("/wishlist", (req, res) => {
   const { steamid } = req.query;
-  res.render("list", { steamid });
+  res.render("wishlist", { steamid });
+});
+
+app.get("/gameslist", (req, res) => {
+  const { steamid } = req.query;
+  res.render("gameslist", { steamid });
 });
 
 app.get("/api/getlist", async (req, res) => {
@@ -32,8 +37,8 @@ app.get("/api/getlist", async (req, res) => {
     });
   }
 
-  const { wishlist, errors } = await getWishlist(steamid);
-  if (errors.length > 0) {
+  const { wishlist, errors } = await steam(steamid).getWishlist();
+  if (errors && errors.length > 0) {
     log(`[${steamid}] Error response(s) from steam: ${errors}`);
     return res.json({
       success: false,
@@ -41,36 +46,65 @@ app.get("/api/getlist", async (req, res) => {
     });
   }
 
-  const apps = Object.entries(wishlist).map(([appid, value]) => {
-    const { capsule: image, name, added } = value;
-    return {
-      appid,
-      image,
-      name,
-      added,
-    };
-  });
+  const apps = Object
+    .entries(wishlist)
+    .map(([appid, value]) => {
+      const { capsule: image, name, added } = value;
+      return {
+        appid,
+        image,
+        name,
+        added,
+      };
+    });
 
-  // sort by date added then by name
-  apps.sort((a, b) => (
-    // eslint-disable-next-line no-nested-ternary
-    (a.added < b.added)
-      ? 1
-      // eslint-disable-next-line no-nested-ternary
-      : (a.added === b.added)
-        ? ((a.name < b.name) ? 1 : -1)
-        : -1));
+  // sort by date added
+  apps.sort((a, b) => ((a.added < b.added) ? 1 : -1));
 
-  const list = {
+  return res.json({
     success: true,
     steamid,
     wishlist: {
       count: apps.length,
       apps,
     },
-  };
+  });
+});
 
-  return res.json(list);
+app.get("/api/getgames", async (req, res) => {
+  const { steamid } = req.query;
+  log(`[${steamid}] Getting games list info`);
+
+  if (!steamid) {
+    return res.json({
+      success: false,
+      message: "Invalid or missing Steam Id!",
+    });
+  }
+
+  const {
+    steamid: id,
+    nickname,
+    games,
+    errors,
+  } = await steam(steamid).getGamesList();
+  if (errors && errors.length > 0) {
+    log(`[${steamid}] Error response(s) from steam: ${errors}`);
+    return res.json({
+      success: false,
+      message: "<b>Steam returned an error!</b><br />Make sure the Steam Id is correct and the wishlist is public and <a href='/'>retry</a>!",
+    });
+  }
+
+  // sort by name
+  games.sort((a, b) => ((a.name < b.name) ? -1 : 1));
+
+  return res.json({
+    success: true,
+    steamid: id,
+    nickname,
+    games,
+  });
 });
 
 app.listen(port, () => {

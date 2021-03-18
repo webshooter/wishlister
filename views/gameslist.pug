@@ -1,0 +1,23 @@
+//- gameslist.pug
+extends layout.pug
+
+block content
+  main
+    #count.heading Looking up games list
+    #steamid.heading for Steam Id: #{steamid}
+    #nickname
+    include list.pug
+  
+  script.
+    (async function() {
+      const steamid = getQsParam("steamid");
+      const { gameslist, error } = await getGamesList(steamid);
+
+      hideLoader();
+      if (error) {
+        showError(error);
+      } else {
+        buildGamesListTable(gameslist);
+      }
+    })();
+    
