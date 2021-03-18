@@ -176,6 +176,25 @@ function tableHeaderRow() {
   return row;
 }
 
+function buildHeaderRow(headers) {
+  const columns = headers.map(({ text, cls }) => {
+    const header = document.createElement("div");
+    header.classList.add("header");
+    header.classList.add(cls);
+    header.appendChild(document.createTextNode(text));
+
+    return header;
+  });
+
+  const row = document.createElement("div");
+  row.classList.add("table-row");
+  row.classList.add("header-row");
+
+  columns.forEach((column) => row.appendChild(column));
+
+  return row;
+}
+
 // eslint-disable-next-line no-unused-vars
 function buildTable(apps) {
   if (apps.length < 1) {
@@ -190,7 +209,12 @@ function buildTable(apps) {
   }
 
   if (!isMobile()) {
-    list.appendChild(tableHeaderRow());
+    list.appendChild(buildHeaderRow([
+      { text: "Icon", cls: "icon" },
+      { text: "App Id", cls: "appid" },
+      { text: "App Name", cls: "name" },
+      { text: "Date Added", cls: "added" },
+    ]));
   }
 
   const rows = apps.map((app) => {
@@ -252,12 +276,26 @@ function buildGamesListTable({
     return;
   }
 
+  const gamesList = document.querySelector("#list");
+  if (!gamesList) {
+    showError("There was a problem getting the list.");
+    return;
+  }
+
   const labelSteamId = document.querySelector("#steamid");
   const labelCount = document.querySelector("#count");
   const labelNickname = document.querySelector("#nickname");
-  const gamesList = document.querySelector("#list");
 
   const count = games.length || 0;
+
+  if (!isMobile()) {
+    gamesList.appendChild(buildHeaderRow([
+      { text: "Icon", cls: "icon" },
+      { text: "App Id", cls: "appid" },
+      { text: "App Name", cls: "name" },
+      { text: "Hours Played", cls: "hours-played" },
+    ]));
+  }
 
   labelCount.innerHTML = `Found ${count} games`;
   labelSteamId.innerHTML = ` for Steam Id ${steamid}`;
@@ -269,14 +307,13 @@ function buildGamesListTable({
       appicon,
       allhours,
       appid: id,
-      link: applink,
     } = game;
 
     const row = document.createElement("div");
     row.classList.add("table-row");
 
     const link = document.createElement("a");
-    link.href = applink;
+    link.href = `https://store.steampowered.com/app/${id}/`;
     link.appendChild(document.createTextNode(appname));
     const name = document.createElement("div");
     name.classList.add("name");

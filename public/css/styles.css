@@ -20,12 +20,15 @@ body {
   margin: 0 auto;
   padding: 0;
   font-family: "Cairo", sans-serif;
+  background-color: #2d283e;
+  color: #D1D7e0;
 }
 
 div.heading {
   font-size: 24px;
   font-weight: 700;
   line-height: 36px;
+  color: #ffaa00;
 }
 
 header,
@@ -37,21 +40,25 @@ footer {
 }
 
 header {
-  background: #ffaa00;
+  background: #564f6f;
   padding: 16px 18px;
   align-items: start;
   justify-content: left;
 }
 
-header .title {
+header a.title {
   font-size: 34px;
   font-weight: 700;
-  color: #efefef;
+  color: #D1D7e0;
   text-decoration: none;
 }
 
+header a.title:hover {
+  color: #ffaa00;
+  text-decoration: underline;
+}
+
 main {
-  background: #ffffff;
   padding: 48px 0;
   flex-direction: column;
 }
@@ -78,34 +85,46 @@ main input.submit {
   font-family: "Cairo", sans-serif;
   font-weight: 600;
   font-size: 18px;
-  color: #efefef;
-  background: #4a4a4a;
-  border: 1px solid #4a4a4a;
+  color: #D1D7e0;
+  background: #802bb1;
+  border: 1px solid #802bb1;
   border-radius: 4px;
   margin-top: 36px; 
 }
 
+main input.submit.bright {
+  background-color: #ffaa00;
+  border: 1px solid #ffaa00;
+  color: #802bb1;
+}
+
+main input.submit:hover,
+main input.submit.bright:hover {
+  cursor: pointer;
+  filter: brightness(120%);
+}
+
 footer {
   padding: 8px;
-  color: #ffeabf;
   font-size: 12px;
-  border-top: 1px solid #ffeabf;
+  border-top: 1px solid #D1D7e0;
 }
 
 div#error {
   margin: 36px 0;
   width: 60%;
   border: 1px solid darkred;
-  background-color: lightcoral;
-  padding: 16px 32px;
-  color: #ffffff;
+  background-color: darkred;
+  padding: 12px 24px;
+  color: #D1D7e0;
   text-align: center;
   font-weight: 600;
+  border-radius: 4px;
 }
 
 div#notice, div#steaminfo {
   margin: 48px 12px 24px 12px;
-  color: #6a6a6a;
+  color: #D1D7e0;
   font-weight: 600;
   text-align: center;
 }
@@ -133,6 +152,11 @@ div.table-row {
   margin-bottom: 6px;
 }
 
+div.table-row.header-row {
+  border-bottom: 1px solid #ffaa00;
+  margin-bottom: 16px;
+}
+
 div.table-row img,
 div.table-row div.appid,
 div.table-row div.name,
@@ -141,10 +165,18 @@ div.table-row div.added {
   font-weight: 400;
 }
 
+div.table-row div.header {
+  font-weight: 700;
+}
+
 div.table-row div.header.icon,
-div.table-row img {
+div.table-row img, div.table-row div.icon {
   width: 100px;
   max-height: 38px;
+}
+
+div.table-row div.icon {
+  padding: 0 16px;
 }
 
 div.table-row div.header.appid,
@@ -164,7 +196,7 @@ div.table-row div.name {
 }
 
 div.table-row div.name a {
-  color: #4a4a4a;
+  color: #D1D7e0;
   text-decoration: none;
 }
 
@@ -188,7 +220,7 @@ div.table-row div.name a:hover {
   width: 13px;
   height: 13px;
   border-radius: 50%;
-  background: #cdcdcd;
+  background: #ffaa00;
   animation-timing-function: cubic-bezier(0, 1, 1, 0);
 }
 .lds-ellipsis div:nth-child(1) {
