@@ -16,11 +16,18 @@ const port = process.env.PORT || 3000;
 // eslint-disable-next-line no-console
 const log = (message) => console.log(message);
 
+const openIdReturnUrl = process.env.NODE_ENV === "development"
+  ? "http://localhost:3000/auth/openid/return"
+  : "http://steam-wishlister.herokuapp.com/auth/openid/return";
+const openIdRealm = process.env.NODE_ENV === "development"
+  ? "http://localhost:3000/"
+  : "http://steam-wishlister.herokuapp.com/";
+
 const SteamStrategy = new OpenIDStrategy({
   providerURL: "http://steamcommunity.com/openid",
   stateless: true,
-  returnURL: "http://localhost:3000/auth/openid/return",
-  realm: "http://localhost:3000/",
+  returnURL: openIdReturnUrl,
+  realm: openIdRealm,
 },
 (async (identifier, done) => {
   try {
@@ -197,5 +204,5 @@ app.get("/auth/logout", (request, response) => {
 
 app.listen(port, () => {
   // eslint-disable-next-line no-console
-  console.log(`Example app listening at http://localhost:${port}`);
+  console.log(`Example app listening on port ${port}`);
 });
