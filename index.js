@@ -70,11 +70,15 @@ app.use(session({
   saveUninitialized: true,
   cookie: { secure: false },
   store: new RedisStore({
-    host: process.env.REDIS_URL,
-    port: 6379,
     client: redisClient,
     ttl: 86400,
   }),
+  // store: new RedisStore({
+  //   host: process.env.REDIS_URL,
+  //   port: 6379,
+  //   client: redisClient,
+  //   ttl: 86400,
+  // }),
 }));
 app.use(passport.initialize());
 app.use(passport.session());
