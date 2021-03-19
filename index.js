@@ -70,7 +70,7 @@ app.use(session({
   saveUninitialized: true,
   cookie: { secure: false },
   store: new RedisStore({
-    host: "localhost",
+    host: process.env.REDIS_URL,
     port: 6379,
     client: redisClient,
     ttl: 86400,
