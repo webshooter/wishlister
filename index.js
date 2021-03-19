@@ -1,5 +1,13 @@
+require("dotenv").config();
+
 const express = require("express");
 const bodyParser = require("body-parser");
+const session = require("express-session");
+const passport = require("passport");
+const OpenIDStrategy = require("passport-openid").Strategy;
+const RedisStore = require("connect-redis")(session);
+const redisClient = require("./redis");
+
 const { steam } = require("./steam");
 
 const app = express();
@@ -8,12 +16,72 @@ const port = process.env.PORT || 3000;
 // eslint-disable-next-line no-console
 const log = (message) => console.log(message);
 
+const SteamStrategy = new OpenIDStrategy({
+  providerURL: "http://steamcommunity.com/openid",
+  stateless: true,
+  returnURL: "http://localhost:3000/auth/openid/return",
+  realm: "http://localhost:3000/",
+},
+(async (identifier, done) => {
+  try {
+    const steamid = identifier.match(/\d+$/)[0];
+    // eslint-disable-next-line no-console
+    console.log(`redis:set:${identifier}:${steamid}`);
+    redisClient.set(identifier, steamid);
+
+    return done(null, {
+      identifier,
+      steamid,
+    });
+  } catch (err) {
+    // eslint-disable-next-line no-console
+    console.error(err);
+    return done(err);
+  }
+}));
+
+passport.use(SteamStrategy);
+
+passport.serializeUser((user, done) => {
+  done(null, user.identifier);
+});
+
+passport.deserializeUser(async (identifier, done) => {
+  try {
+    const steamid = redisClient.get(identifier);
+    return done(null, {
+      identifier,
+      steamid,
+    });
+  } catch (err) {
+    // eslint-disable-next-line no-console
+    console.error(err);
+    return done(err);
+  }
+});
+
 app.set("view engine", "pug");
 app.use(bodyParser.json());
 app.use(express.static("public"));
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  name: "_oidexample",
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: false },
+  store: new RedisStore({
+    host: "localhost",
+    port: 6379,
+    client: redisClient,
+    ttl: 86400,
+  }),
+}));
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.get("/", (req, res) => {
-  res.render("index", {});
+  const { steamid } = req.query;
+  res.render("index", { steamid });
 });
 
 app.get("/wishlist", (req, res) => {
@@ -105,6 +173,22 @@ app.get("/api/getgames", async (req, res) => {
     nickname,
     games,
   });
+});
+
+app.post("/auth/openid", passport.authenticate("openid"));
+
+app.get("/auth/openid/return", passport.authenticate("openid"),
+  (request, response) => {
+    if (request.user) {
+      response.redirect(`/?steamid=${request.user.steamid}`);
+    } else {
+      response.redirect("/?failed");
+    }
+  });
+
+app.get("/auth/logout", (request, response) => {
+  request.logout();
+  response.redirect("/");
 });
 
 app.listen(port, () => {

@@ -1,3 +1,9 @@
 //- header.pug
 header
-  a.title(href="/") Steam User Info
+  if steamid
+    a.title(href=`/?steamid=${steamid}`) Steam User Info
+    .steam-logout
+      a.logout(href="/auth/logout") Steam Logout
+  else
+    a.title(href="/") Steam User Info
+    include steam-login.pug

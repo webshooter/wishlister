@@ -42,8 +42,8 @@ footer {
 header {
   background: #564f6f;
   padding: 16px 18px;
-  align-items: start;
-  justify-content: left;
+  align-items: flex-end;
+  justify-content: space-between;
 }
 
 header a.title {
@@ -56,6 +56,10 @@ header a.title {
 header a.title:hover {
   color: #ffaa00;
   text-decoration: underline;
+}
+
+header form input {
+  max-width: 90px;
 }
 
 main {
@@ -201,6 +205,15 @@ div.table-row div.name a {
 }
 
 div.table-row div.name a:hover {
+  color: #ffaa00;
+  text-decoration: underline;
+}
+
+div.steam-logout a.logout {
+  color: #D1D7e0;
+  text-decoration: none;
+}
+div.steam-logout a.logout:hover {
   color: #ffaa00;
   text-decoration: underline;
 }

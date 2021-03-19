@@ -1,7 +1,10 @@
 //- main.pug
 main
   h1 Lookup Steam User Info
-  input#steamid.steamid(type="text" placeholder="User's Steam Id")
+  if steamid
+    input#steamid.steamid(type="text" value=steamid)
+  else
+    input#steamid.steamid(type="text" placeholder="User's Steam Id")
   input.submit(type="button" value="Get Steam Wishlist" onclick="return getWishlistClick()")
   input.submit.bright(type="button" value="Get Steam Games List" onclick="return getGamesListClick()")
   #notice The Steam profile MUST be set to public to allow acces to the wishlist information!
