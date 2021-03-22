@@ -42,7 +42,7 @@ footer {
 header {
   background: #564f6f;
   padding: 16px 18px;
-  align-items: flex-end;
+  align-items: baseline;
   justify-content: space-between;
 }
 
@@ -63,7 +63,7 @@ header form input {
 }
 
 main {
-  padding: 48px 0;
+  padding: 48px 18px;
   flex-direction: column;
 }
 
@@ -93,7 +93,7 @@ main input.submit {
   background: #802bb1;
   border: 1px solid #802bb1;
   border-radius: 4px;
-  margin-top: 36px; 
+  margin-top: 18px; 
 }
 
 main input.submit.bright {
@@ -126,15 +126,34 @@ div#error {
   border-radius: 4px;
 }
 
-div#notice, div#steaminfo {
-  margin: 48px 12px 24px 12px;
-  color: #D1D7e0;
-  font-weight: 600;
+div#notice {
+  margin-top: 18px;
+}
+
+div#showinfo {
+  font-size: 12px;
   text-align: center;
+  cursor: pointer;
+}
+
+div#showinfo:hover {
+  color: #ffaa00;
 }
 
 div#steaminfo {
+  margin: 0 12px 24px 12px;
   margin-top: 0;
+  color: #D1D7e0;
+  font-weight: 400;
+  text-align: center;
+}
+
+div#steaminfo pre {
+  margin-top: 0;
+  padding: 2px 4px;
+  background-color: #564f6f;
+  border-radius: 4px;
+  font-size: 12px;
 }
 
 div#nickname {
@@ -218,6 +237,56 @@ div.steam-logout a.logout:hover {
   text-decoration: underline;
 }
 
+div.featured-games {
+  display: flex;
+  flex-direction: column;
+  margin-top: 24px;
+}
+
+div.featured-games div.heading {
+  font-size: 22px;
+  font-weight: 700;
+}
+
+div.featured-games div.games-list div.wishlist-game {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 18px 24px;
+  margin-bottom: 8px;
+  width: 30%;
+  min-width: 600px;
+  background-color: #564f6f;
+  border-radius: 4px;
+}
+div.featured-games div.games-list div.wishlist-game div.title {
+  font-weight: 700;
+  color: #D1D7e0;
+}
+div.featured-games div.games-list div.wishlist-game div.add-to-wishlist {
+  align-self: flex-end;
+  padding: 0 12px;
+  font-weight: 700;
+  background-color: #6ca332;
+  color: #D1D7e0;
+  border-radius: 4px;
+  border: 2px solid transparent;
+  cursor: pointer;
+
+  -webkit-transition: color 100ms linear;
+  -ms-transition: color 100ms linear;
+  transition: color 100ms linear;
+
+  -webkit-transition: background-color 100ms linear;
+  -ms-transition: background-color 100ms linear;
+  transition: background-color 100ms linear;
+}
+div.featured-games div.games-list div.wishlist-game div.add-to-wishlist:hover {
+  background-color: #d1d7e0;
+  color: #2d283e;
+}
+
 
 /* loading animation */
 
@@ -287,9 +356,28 @@ div.steam-logout a.logout:hover {
     width: 80%;
   }
 
+  main h1 {
+    font-size: 28px;
+  }
+
   div.table-row div.header.name,
   div.table-row div.name {
     width: 100%;
+  }
+
+  div.steam-logout a.logout {
+    font-size: 12px;
+  }
+
+  div.featured-games {
+    width: 100%;
+  }
+
+  div.featured-games div.games-list div.wishlist-game {
+    flex-direction: column;
+    padding: 8px 12px;
+    width: unset;
+    min-width: unset;
   }
   
 }

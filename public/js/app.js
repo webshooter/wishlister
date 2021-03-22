@@ -60,6 +60,27 @@ function isMobile() {
 }
 
 // eslint-disable-next-line no-unused-vars
+function toggleInfo() {
+  const infoLink = document.querySelector("#showinfo");
+  const infoBlock = document.querySelector("#infoblock");
+  if (!infoLink || !infoBlock) {
+    return;
+  }
+
+  console.log("infoLink", infoLink.innerHTML);
+
+  if (infoBlock.classList.contains("hide")) {
+    infoBlock.classList.remove("hide");
+    infoLink.innerHTML = "[hide info]";
+  } else {
+    infoBlock.classList.add("hide");
+    infoLink.innerHTML = "[info]";
+  }
+
+  console.log("classlist: ", infoBlock.classList.value);
+}
+
+// eslint-disable-next-line no-unused-vars
 function getQsParam(param, url = window.location.href) {
   const paramName = param.replace(/[[\]]/g, "\\$&");
   const re = new RegExp(`[?&]${paramName}(=([^&#]*)|&|#|$)`);

@@ -7,8 +7,11 @@ main
     input#steamid.steamid(type="text" placeholder="User's Steam Id")
   input.submit(type="button" value="Get Steam Wishlist" onclick="return getWishlistClick()")
   input.submit.bright(type="button" value="Get Steam Games List" onclick="return getGamesListClick()")
-  #notice The Steam profile MUST be set to public to allow acces to the wishlist information!
-  #steaminfo You can find your Steam Id on your <b>Profile page</b> in either the client or on the steampowered.com website.<br />Your profile url contains your Steam Id: <b>https://steamcommunity.com/profiles/[steamid]/</b>
+
+  include info.pug
+
+  if steamid
+    include featured-games.pug
 
 script.
   const inputField = document.querySelector("#steamid");
